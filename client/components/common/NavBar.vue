@@ -14,12 +14,31 @@
       <router-link to="/">
         Home
       </router-link>
+
+      <router-link
+        v-if="$store.state.username"
+        to="/friends"
+      >
+        Friends
+      </router-link>
+      <router-link
+        v-if="$store.state.username"
+        to="/favorites"
+      >
+        Favorites
+      </router-link>
       <router-link
         v-if="$store.state.username"
         to="/account"
       >
         Account
       </router-link>
+      <router-link
+        v-if="$store.state.username"
+        to="/search"
+      >
+        Search
+      </router-link>      
       <router-link
         v-else
         to="/login"

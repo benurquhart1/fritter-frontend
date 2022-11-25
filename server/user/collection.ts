@@ -1,6 +1,8 @@
 import type {HydratedDocument, Types} from 'mongoose';
 import type {User} from './model';
 import UserModel from './model';
+import FollowModel from '../follow/model';
+import FollowCollection from '../follow/collection';
 
 /**
  * This file contains a class with functionality to interact with users stored
@@ -16,12 +18,12 @@ class UserCollection {
    *
    * @param {string} username - The username of the user
    * @param {string} password - The password of the user
+   * @param {Date} birthday - The birthday of the user
+   * @param {string} bio - The user's bio
    * @return {Promise<HydratedDocument<User>>} - The newly created user
    */
-  static async addOne(username: string, password: string): Promise<HydratedDocument<User>> {
-    const dateJoined = new Date();
-
-    const user = new UserModel({username, password, dateJoined});
+  static async addOne(username: string, password: string, birthday: Date, bio:string=''): Promise<HydratedDocument<User>> {
+    const user = new UserModel({username, password, birthday, bio});
     await user.save(); // Saves user to MongoDB
     return user;
   }
@@ -67,14 +69,18 @@ class UserCollection {
    * @param {Object} userDetails - An object with the user's updated credentials
    * @return {Promise<HydratedDocument<User>>} - The updated user
    */
-  static async updateOne(userId: Types.ObjectId | string, userDetails: {password?: string; username?: string}): Promise<HydratedDocument<User>> {
+  static async updateOne(userId: Types.ObjectId | string, userDetails: any): Promise<HydratedDocument<User>> {
     const user = await UserModel.findOne({_id: userId});
     if (userDetails.password) {
-      user.password = userDetails.password;
+      user.password = userDetails.password as string;
     }
 
     if (userDetails.username) {
-      user.username = userDetails.username;
+      user.username = userDetails.username as string;
+    }
+
+    if (userDetails.bio) {
+      user.bio = userDetails.bio as string;
     }
 
     await user.save();
