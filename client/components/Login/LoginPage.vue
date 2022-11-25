@@ -15,18 +15,26 @@
       </header>
       <LoginForm />
     </section>
+    <section>
+      <header>
+        <h2>Logout</h2>
+      </header>
+      <LogoutForm />
+    </section>
   </main>
 </template>
 
 <script>
 import RegisterForm from '@/components/Login/RegisterForm.vue';
 import LoginForm from '@/components/Login/LoginForm.vue';
+import LogoutForm from '@/components/Account/LogoutForm.vue';
 
 export default {
   name: 'LoginPage',
   components: {
     RegisterForm,
-    LoginForm
+    LoginForm,
+    LogoutForm
   }
 };
 </script>

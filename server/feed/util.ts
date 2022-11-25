@@ -1,7 +1,7 @@
 import FreetCollection from '../freet/collection';
 import { FreetResponse } from '../freet/util';
 import type {HydratedDocument, Types} from 'mongoose';
-import UserCollection from 'user/collection';
+import UserCollection from '../user/collection';
 import type {Feed, PopulatedFeed} from '../feed/model';
 import FeedCollection from './collection';
 import * as freetUtil from '../freet/util';
