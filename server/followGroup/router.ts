@@ -14,14 +14,16 @@ const router = express.Router();
  *
  * @name GET /api/followGroup?username=username
  *
- * @return {FollowGroupResponse} - an object containing the usernames that a user is followGrouping and followGrouped by
- * @throws {400} - If username is not given
+ * @return {FollowGroupResponse} - an object containing the names and ids of the groups a user follows
+ * @throws {400} - If name is not given
  * @throws {404} - If no user has given username
  *
  */
 router.get(
   '/',
-  userValidator.isUsernameExistsQuery,
+  [
+    userValidator.isUsernameExistsQuery,
+  ],
   async (req: Request, res: Response) => {
     const followGroupObject = await FollowGroupCollection.findOneByUsername(req.query.username as string);
     const response = util.constructFollowGroupResponse(followGroupObject);
@@ -30,16 +32,16 @@ router.get(
 );
 
 /**
- * One user followGroups another user
+ * One user follows a content group
  *
  * @name POST /api/followGroup
  *
  * @param {string} username - The username of the account that the user is followGrouping
  * @return {string} - A success message
  * @throws {403} - If the user is not logged in
- * @throws {400} - If username is not given
- * @throws {404} - If no user has given username
- * @throws {405} - If you already followGroup the user
+ * @throws {400} - If group name is not given
+ * @throws {404} - If no group with that name can be found
+ * @throws {409} - If you already follow the group
  */
 router.post(
   '/',
@@ -63,15 +65,15 @@ router.post(
 );
 
 /**
- * unfollowGroups another user
+ * unfollow a content group
  *
  * @name DELETE /api/followGroup/:username
  *
  * @return {string} - A success message
  * @throws {403} - If the user is not logged in
  * @throws {400} - If username is not given
- * @throws {404} - If no user has given username
- * @throws {405} - If you already do not followGroup the user
+ * @throws {404} - If a content group with that name cannot be found
+ * @throws {405} - If you do not follow the content group
  */
 router.delete(
   '/:name',

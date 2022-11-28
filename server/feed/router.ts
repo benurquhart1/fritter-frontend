@@ -39,7 +39,7 @@ router.get(
  * @return {FeedResponse} - The created feed
  * @throws {403} - If the user is not logged in
  * @throws {400} - the name for the feed is not given
- * @throws {404} - The user already has a feed with the given name
+ * @throws {409} - The user already has a feed with the given name
  */
 router.post(
   '/',

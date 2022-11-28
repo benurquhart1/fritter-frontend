@@ -157,7 +157,7 @@ class ContentGroupCollection {
     const group = await this.findOne(name);
     const accountId = (await UserCollection.findOneByUsername(account))._id;
     await ContentGroupModel.updateOne({name:name},{$pull: {accounts:accountId}});
-    for (const following in group.followers) {
+    for (const following in this.findfollowers(name)) {
       await FeedCollection.deleteOneAccount(following,name,account);
     }
   }

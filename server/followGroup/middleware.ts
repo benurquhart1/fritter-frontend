@@ -10,9 +10,7 @@ const isFollowing = async (req: Request, res: Response, next: NextFunction) => {
   const following = await FollowGroupCollection.checkFollowingById(req.session.userId, groupId);
   if (!following) {
     res.status(409).json({
-      error: {
-        followNotFound: `You are not following the group ${req.params.name}`
-      }
+      error: `You are not following the group ${req.params.name}`
     });
     return;
   }
@@ -27,9 +25,7 @@ const isNotFollowing = async (req: Request, res: Response, next: NextFunction) =
   const following = await FollowGroupCollection.checkFollowingById(req.session.userId, groupId);
   if (following) {
     res.status(409).json({
-      error: {
-        followGroupFound: `You are already following ${req.body.name}`
-      }
+      error: `You are already following ${req.body.name}`
     });
     return;
   }

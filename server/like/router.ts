@@ -37,8 +37,8 @@ router.get(
  * @param {string} freetId - the Id of the freet being liked
  * @return {string} - a success message
  * @throws {403} - If the user is not logged in
- * @throws {404} - If the user has already liked the freet
  * @throws {404} - If the freetId is not valid
+ * @throws {409} - If the user has already liked the freet
  */
 router.post(
   '/',
@@ -63,8 +63,8 @@ router.post(
  *
  * @return {string} - a success message
  * @throws {403} - If the user is not logged in
- * @throws {404} - If the user has already liked the freet
  * @throws {404} - If the freetId is not valid
+ * @throws {409} - If the user has not already liked the freet
  */
 router.delete(
   '/:freetId',

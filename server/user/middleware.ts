@@ -14,9 +14,7 @@ const isCurrentSessionUserExists = async (req: Request, res: Response, next: Nex
     if (!user) {
       req.session.userId = undefined;
       res.status(500).json({
-        error: {
-          userNotFound: 'User session was not recognized.'
-        }
+        error: 'User session was not recognized.'
       });
       return;
     }
@@ -32,9 +30,7 @@ const isValidUsername = (req: Request, res: Response, next: NextFunction) => {
   const usernameRegex = /^\w+$/i;
   if (!usernameRegex.test(req.body.username)) {
     res.status(400).json({
-      error: {
-        username: 'Username must be a nonempty alphanumeric string.'
-      }
+      error: 'Username must be a nonempty alphanumeric string.'
     });
     return;
   }
@@ -49,9 +45,7 @@ const isValidPassword = (req: Request, res: Response, next: NextFunction) => {
   const passwordRegex = /^\S+$/;
   if (!passwordRegex.test(req.body.password)) {
     res.status(400).json({
-      error: {
-        password: 'Password must be a nonempty string.'
-      }
+      error: 'Password must be a nonempty string.'
     });
     return;
   }
@@ -95,9 +89,7 @@ const isUsernameNotAlreadyInUse = async (req: Request, res: Response, next: Next
   }
 
   res.status(409).json({
-    error: {
-      username: 'An account with this username already exists.'
-    }
+    error: 'An account with this username already exists.'
   });
 };
 
@@ -151,9 +143,7 @@ const isUsernameExistsBody = async (req: Request, res: Response, next: NextFunct
 const isUserLoggedIn = (req: Request, res: Response, next: NextFunction) => {
   if (!req.session.userId) {
     res.status(403).json({
-      error: {
-        auth: 'You must be logged in to complete this action.'
-      }
+      error: 'You must be logged in to complete this action.'
     });
     return;
   }
@@ -172,6 +162,19 @@ const isUserLoggedOut = (req: Request, res: Response, next: NextFunction) => {
     return;
   }
 
+  next();
+};
+
+/**
+ * Checks if a username in req.body is valid, that is, it matches the username regex
+ */
+const isBirthdayGiven = (req: Request, res: Response, next: NextFunction) => {
+  if (!req.body.birthday) {
+    res.status(404).json({
+      error: 'birthday is not given'
+    });
+    return;
+  }
   next();
 };
 
@@ -209,5 +212,6 @@ export {
   // isUsernameExists,
   isUsernameExistsBody,
   isUsernameExistsQuery,
-  isUsernameExistsParams
+  isUsernameExistsParams,
+  isBirthdayGiven
 };

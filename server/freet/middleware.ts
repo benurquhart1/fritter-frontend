@@ -10,9 +10,7 @@ const isFreetExists = async (req: Request, res: Response, next: NextFunction) =>
   const freet = validFormat ? await FreetCollection.findOne(req.params.freetId) : '';
   if (!freet) {
     res.status(404).json({
-      error: {
-        freetNotFound: `Freet with freet ID ${req.params.freetId} does not exist.`
-      }
+      error: `Freet with freet ID ${req.params.freetId} does not exist.`
     });
     return;
   }
@@ -28,9 +26,7 @@ const isFreetExists = async (req: Request, res: Response, next: NextFunction) =>
   const freet = validFormat ? await FreetCollection.findOne(req.query.freetId as string) : '';
   if (!freet) {
     res.status(404).json({
-      error: {
-        freetNotFound: `Freet with freet ID ${req.query.freetId as string} does not exist.`
-      }
+      error: `Freet with freet ID ${req.query.freetId as string} does not exist.`
     });
     return;
   }
@@ -46,9 +42,7 @@ const isFreetExists = async (req: Request, res: Response, next: NextFunction) =>
   const freet = validFormat ? await FreetCollection.findOne(req.body.freetId) : '';
   if (!freet) {
     res.status(404).json({
-      error: {
-        freetNotFound: `Freet with freet ID ${req.body.freetId} does not exist.`
-      }
+      error: `Freet with freet ID ${req.body.freetId} does not exist.`
     });
     return;
   }

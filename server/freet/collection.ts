@@ -111,48 +111,6 @@ class FreetCollection {
     return FreetModel.find({authorId: {$in: userIds}}).sort({dateModified:-1}).populate('authorId');
   }
 
-
-  // /**
-  //  * Get all the freets in by a group of accounts and sorts them in the given manor
-  //  *
-  //  * @param {string} usernames - The usernames of accounts freets are being requested from
-  //  * @return {Promise<HydratedDocument<Freet>[]>} - An array of all of the freets by accounts with a username
-  //  */
-  //  static async findAllByIdAndSortUnviewed(userId:Types.ObjectId | string, userIds: Array<string | Types.ObjectId>, sort:Sort): Promise<HydratedDocument<Freet>[]> {
-  //   // const userIds = [];
-  //   // for (const username in usernames) {
-  //   //   userIds.push((await UserCollection.findOneByUsername(username))._id);
-  //   // }
-  //   if (sort === Sort.date) {
-  //     return FreetModel.find({authorId: {$in: userIds}}, {$not: {views:userId}}).sort({dateModified:-1}).populate('authorId');
-  //   }
-  //   else if (sort === Sort.dateReversed) {
-  //     return FreetModel.find({authorId: {$in: userIds}}, {$not: {views:userId}}).sort({dateModified:1}).populate('authorId');
-  //   }
-  //   else if (sort === Sort.views) {
-  //     return FreetModel.find({authorId: {$in: userIds}}, {$not: {views:userId}}).sort({numViews: 1}).populate('authorId');
-  //   }
-  //   else if (sort === Sort.likes) {
-  //     return FreetModel.find({authorId: {$in: userIds}}, {$not: {views:userId}}).sort({numLikes: 1}).populate('authorId');
-  //   }
-  //   return FreetModel.find({authorId: {$in: userIds}}, {$not: {views:userId}}).sort({dateModified:-1}).populate('authorId');
-  // }
-
-  // /**
-  //  * return a sorted list of freets sorted using a given method
-  //  *
-  //  * @param {Sort} sort - The usernames of accounts freets are being requested from
-  //  * @return {Promise<HydratedDocument<Freet>[]>} - An array of all of the freets by accounts with a username
-  //  */
-  //  static async sortFreets(sort:Sort, freets:Array<PopulatedFreet>): Promise<Array<HydratedDocument<Freet>>> {
-  //   const userIds = [];
-
-  //   for (const username in usernames) {
-  //     userIds.push((await UserCollection.findOneByUsername(username))._id);
-  //   }
-  //   return FreetModel.find({$in: {authorId: userIds}}).populate('authorId');
-  // }
-
   /**
    * Update a freet with the new content
    *

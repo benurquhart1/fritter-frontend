@@ -8,9 +8,7 @@ const isNameExists = async (req: Request, res: Response, next: NextFunction) => 
   const feed = await FeedCollection.findOne(req.session.userId,req.params.name);
   if (!feed) {
     res.status(404).json({
-      error: {
-        feedNotFound: `the feed with name ${req.params.name} cannot be found`
-      }
+      error: `the feed with name ${req.params.name} cannot be found`
     });
     return;
   }
@@ -24,9 +22,7 @@ const isNameExists = async (req: Request, res: Response, next: NextFunction) => 
   const feed = await FeedCollection.findOne(req.session.userId,req.body.name);
   if (!feed) {
     res.status(404).json({
-      error: {
-        feedNotFound: `the feed with name ${req.body.name} cannot be found`
-      }
+      error: `the feed with name ${req.body.name} cannot be found`
     });
     return;
   }
@@ -40,9 +36,7 @@ const isNameExistsQuery = async (req: Request, res: Response, next: NextFunction
   const feed = await FeedCollection.findOne(req.session.userId,req.query.name as string);
   if (!feed) {
     res.status(404).json({
-      error: {
-        feedNotFound: `the feed with name ${req.query.name as string} cannot be found`
-      }
+      error: `the feed with name ${req.query.name as string} cannot be found`
     });
     return;
   }
@@ -55,10 +49,8 @@ const isNameExistsQuery = async (req: Request, res: Response, next: NextFunction
 const isNotNameExists = async (req: Request, res: Response, next: NextFunction) => {
   const feed = await FeedCollection.findOne(req.session.userId,req.body.name);
   if (feed) {
-    res.status(404).json({
-      error: {
-        feedNotFound: `the feed with name ${req.body.name} cannot be found`
-      }
+    res.status(409).json({
+      error: `the feed with name ${req.body.name} already exists`
     });
     return;
   }

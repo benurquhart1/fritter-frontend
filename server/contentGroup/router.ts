@@ -17,7 +17,8 @@ const router = express.Router();
  * @name GET /api/follow?username=username
  *
  * @return {ContentGroupResponse} - an object containing the usernames that a user is following and followed by
- * @throws {404} - If no content group with that name exists
+ * @throws {400} - If the content group name is not given
+ * @throws {404} - If the content group with that name does not exist
  *
  */
 router.get(
@@ -73,11 +74,11 @@ router.post(
  * @param {string} addAccount - a account to be added
  * @param {string} addAccount - a account to be removed
  * @return {ContentGroupResponse} - the updated freet
- * @throws {403} - if the user is not logged in or not the author of
- *                 of the freet
- * @throws {404} - If the freetId is not valid
- * @throws {400} - If the freet content is empty or a stream of empty spaces
- * @throws {413} - If the freet content is more than 140 characters long
+ * @throws {403} - if the user is not logged in
+ * @throws {400} - If the content group name is not given
+ * @throws {404} - If the content group with that name does not exist
+ * @throws {403} - If the user makin the request is not a moderator for the content group 
+ * @throws {404} - If any of the accounts or moderators to add or remove are given, but the usernames do not exist
  */
 router.put(
   '/:name?',
@@ -85,6 +86,10 @@ router.put(
     userValidator.isUserLoggedIn,
     contentGroupValidator.isNameExistsParams,
     contentGroupValidator.isModerator,
+    contentGroupValidator.isAccountExistsAdd,
+    contentGroupValidator.isAccountExistsRemove,
+    contentGroupValidator.isModeratorExistsAdd,
+    contentGroupValidator.isModeratorExistsRemove,
   ],
   async (req: Request, res: Response) => {
     const group = await ContentGroupCollection.updateOne(req.params.name, req.body);
@@ -103,10 +108,10 @@ router.put(
  *
  * @return {string} - A success message
  * @throws {403} - If the user is not logged in
- * @throws {403} - If the user is not the owner 
- * @throws {400} - If username is not given
- * @throws {404} - If no user has given username
- * @throws {405} - If you already do not follow the user
+ * @throws {400} - If the content group name is not given
+ * @throws {404} - If the content group with that name does not exist
+ * @throws {403} - If the user is not the owner of the content group
+
  */
 router.delete(
   '/:name',

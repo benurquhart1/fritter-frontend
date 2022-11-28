@@ -38,7 +38,7 @@ router.get(
  * @throws {403} - If the user is not logged in
  * @throws {400} - If username is not given
  * @throws {404} - If no user has given username
- * @throws {405} - If you already favorite the user
+ * @throws {409} - If you already favorite the user
  */
 router.post(
   '/',
@@ -65,7 +65,7 @@ router.post(
  * @throws {403} - If the user is not logged in
  * @throws {400} - If username is not given
  * @throws {404} - If no user has given username
- * @throws {405} - If you already do not favorite the user
+ * @throws {409} - If you already do not favorite the user
  */
 router.delete(
   '/:username',

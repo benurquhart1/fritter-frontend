@@ -4,24 +4,23 @@
 import BlockForm from '@/components/common/BlockForm.vue';
 
 export default {
-  name: 'FollowUserForm',
+  name: 'CreateFreetForm',
   mixins: [BlockForm],
   data() {
     return {
-      url: '/api/follow',
+      url: '/api/freets',
       method: 'POST',
       hasBody: true,
       fields: [
-        {id: 'username', label: 'username', value: ''}
+        {id: 'content', label: 'Content', value: ''}
       ],
-      title: 'Follow a user',
+      title: 'Create a freet',
       refreshFreets: true,
       callback: () => {
-        const message = 'You have successfully followed the user';
+        const message = 'Successfully created a freet!';
         this.$set(this.alerts, message, 'success');
         setTimeout(() => this.$delete(this.alerts, message), 3000);
       }
-      
     };
   }
 };

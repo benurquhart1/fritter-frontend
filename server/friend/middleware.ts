@@ -8,9 +8,7 @@ const isFriending = async (req: Request, res: Response, next: NextFunction) => {
   const friending = await FriendCollection.checkFriendByUsername(req.params.username,req.session.userId);
   if (!friending) {
     res.status(409).json({
-      error: {
-        friendNotFound: `You do not have ${req.params.username} as a friend`
-      }
+      error:`You do not have ${req.params.username} as a friend`
     });
     return;
   }
@@ -24,9 +22,7 @@ const isNotFriending = async (req: Request, res: Response, next: NextFunction) =
   const friending = await FriendCollection.checkFriendByUsername(req.body.username,req.session.userId);
   if (friending) {
     res.status(409).json({
-      error: {
-        friendFound: `You already have ${req.body.username} as a friend`
-      }
+      error: `You already have ${req.body.username} as a friend`
     });
     return;
   }
