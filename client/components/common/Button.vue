@@ -2,35 +2,8 @@
 <!-- This is just an example; feel free to define any reusable components you want! -->
 
 <template>
-  <form @submit.prevent="submit">
-    <h3>{{ title }}</h3>
-    <article
-      v-if="fields.length"
-    >
-      <div
-        v-for="field in fields"
-        :key="field.id"
-      >
-        <label :for="field.id">{{ field.label }}:</label>
-        <textarea
-          v-if="field.id === 'content'"
-          :name="field.id"
-          :value="field.value"
-          @input="field.value = $event.target.value"
-        />
-        <input
-          v-else
-          :type="field.id === 'password' ? 'password' : 'text'"
-          :name="field.id"
-          :value="field.value"
-          @input="field.value = $event.target.value"
-        >
-      </div>
-    </article>
-    <article v-else>
-      <p>{{ content }}</p>
-    </article>
-    <button
+  <div>
+    <button v-on:click="submit"
       type="submit"
     >
       {{ title }}
@@ -44,13 +17,13 @@
         <p>{{ alert }}</p>
       </article>
     </section>
-  </form>
+  </div>
 </template>
 
 <script>
 
 export default {
-  name: 'BlockForm',
+  name: 'Button',
   data() {
     /**
      * Options for submitting this form.
@@ -63,7 +36,7 @@ export default {
       setUserId: false,
       refreshFreets: false, // Whether or not stored freets should be updated after form submission
       alerts: {}, // Displays success/error messages encountered during form submission
-      callback: null // Function to run after successful form submission
+      callback: null, // Function to run after successful form submission
     };
   },
   methods: {
@@ -92,31 +65,6 @@ export default {
           // If response is not okay, we throw an error and enter the catch block
           const res = await r.json();
           throw new Error(res.error);
-        }
-
-        if (this.setUsername) {
-          const text = await r.text();
-          const res = text ? JSON.parse(text) : {user: null};
-          this.$store.commit('setUsername', res.user ? res.user.username : null);
-        }
-        // if (this.setUserId) {
-        //   const text = await r.text();
-        //   const res = text ? JSON.parse(text) : {user: null};
-        //   this.$store.commit('setUserId', res.user ? res.user._id : null);
-        // }
-
-        if (this.setProfile) {
-          const text = await r.text();
-          const res = text ? JSON.parse(text) : {user: null};
-          this.$store.commit('setProfile', res.user ? res.user.username : null);
-        }
-
-        if (this.refreshFreets) {
-          this.$store.commit('refreshFreets');
-        }
-
-        if (this.callback) {
-          this.callback();
         }
       } catch (e) {
         this.$set(this.alerts, e, 'error');

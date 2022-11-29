@@ -7,7 +7,9 @@
         <h2>Welcome @{{ $store.state.username }}</h2>
       </header>
       <FollowUserForm />
+      <FollowButton />
       <UnfollowUserForm />
+      <FeedComponent/>
     </section>
     <section v-else>
       <header>
@@ -29,11 +31,12 @@
 import FreetComponent from '@/components/Freet/FreetComponent.vue';
 import FollowUserForm from '@/components/Follow/FollowUserForm.vue';
 import UnfollowUserForm from '@/components/Follow/UnfollowUserForm.vue';
-
+import FeedComponent from '@/components/Feed/FeedComponent.vue';
+import FollowButton from '@/components/Profile/FollowButton.vue';
 
 export default {
   name: 'FollowPage',
-  components: {FreetComponent, FollowUserForm, UnfollowUserForm},
+  components: {FreetComponent, FollowUserForm, FeedComponent, UnfollowUserForm, FollowButton},
   mounted() {
     // this.$refs.getFreetsForm.submit();
   }

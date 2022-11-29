@@ -70,21 +70,22 @@ class UserCollection {
    * @return {Promise<HydratedDocument<User>>} - The updated user
    */
   static async updateOne(userId: Types.ObjectId | string, userDetails: any): Promise<HydratedDocument<User>> {
-    const user = await UserModel.findOne({_id: userId});
+    // const user = await UserModel.findOne({_id: userId});
     if (userDetails.password) {
-      user.password = userDetails.password as string;
+      await UserModel.updateOne({_id:userId},{password:userDetails.password as string});
     }
 
     if (userDetails.username) {
-      user.username = userDetails.username as string;
+      await UserModel.updateOne({_id:userId},{username:userDetails.username as string});
     }
 
     if (userDetails.bio) {
-      user.bio = userDetails.bio as string;
+      await UserModel.updateOne({_id:userId},{bio:userDetails.bio as string});
     }
 
-    await user.save();
-    return user;
+    // await user.save();
+    // return user;
+    return this.findOneByUserId(userId);
   }
 
   /**

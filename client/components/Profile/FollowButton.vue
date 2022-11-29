@@ -1,25 +1,22 @@
 <!-- Form for registering an account (block style) -->
 
 <script>
-import BlockForm from '@/components/common/BlockForm.vue';
+import Button from '@/components/common/Button.vue';
 
 export default {
-  name: 'RegisterForm',
-  mixins: [BlockForm],
+  name: 'FollowButton',
+  mixins: [Button],
   data() {
     return {
-      url: '/api/users',
+      url: '/api/follow',
       method: 'POST',
       hasBody: true,
       setUsername: true,
       setUserId: true,
       fields: [
-        {id: 'username', label: 'Username', value: ''},
-        {id: 'password', label: 'Password', value: ''},
-        {id: 'bio', label: 'bio', value: ''},
-        {id: 'birthday', label: 'birthday', value: ''}
+        {id: 'username', label: 'Username', value: '1'},
       ],
-      title: 'Create account',
+      title: 'Follow User',
       callback: () => {
         const message = 'Successfully created an account!';
         this.$router.push({name: 'Home'});

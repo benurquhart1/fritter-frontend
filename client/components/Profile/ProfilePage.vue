@@ -5,19 +5,20 @@
   <main>
     <section>
       <header>
-        <h2>@{{ $store.state.profile }}</h2>
+        <h2>@{{ username }}</h2>
+
       </header>
     </section>
     <section>
       <header>
-        <FollowUserForm/>
+        <FollowButton/>
       </header>
     </section>
   </main>
 </template>
 
 <script>
-import FollowUserForm from '@/components/Follow/FollowUsernameForm.vue';
+import FollowUserForm from '@/components/Follow/FollowUserForm.vue';
 import ChangePasswordForm from '@/components/Account/ChangePasswordForm.vue';
 import DeleteAccountForm from '@/components/Account/DeleteAccountForm.vue';
 import LogoutForm from '@/components/Account/LogoutForm.vue';

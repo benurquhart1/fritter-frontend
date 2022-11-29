@@ -12,7 +12,10 @@ const store = new Vuex.Store({
     filter: null, // Username to filter shown freets by (null = show all)
     freets: [], // All freets created in the app
     username: null, // Username of the logged in user
-    alerts: {} // global success/error messages encountered during submissions to non-visible forms
+    userId: null, // the id of the logged in user
+    alerts: {}, // global success/error messages encountered during submissions to non-visible forms
+    feed: "following", // the current feed being viewed
+    profile:"a",
   },
   mutations: {
     alert(state, payload) {
@@ -31,6 +34,13 @@ const store = new Vuex.Store({
        */
       state.username = username;
     },
+    setUserId(state, userId) {
+      /**
+       * Update the stored username to the specified one.
+       * @param userId- new user id to set
+       */
+      state.userId = userId;
+    },
     updateFilter(state, filter) {
       /**
        * Update the stored freets filter to the specified one.
@@ -38,12 +48,35 @@ const store = new Vuex.Store({
        */
       state.filter = filter;
     },
+    updateProfile(state, profile) {
+      /**
+       * Update the stored freets filter to the specified one.
+       * @param profile - Username of the user to view the profile of
+       */
+      state.profile = profile;
+    },
     updateFreets(state, freets) {
       /**
        * Update the stored freets to the provided freets.
        * @param freets - Freets to store
        */
       state.freets = freets;
+    },
+    async updateFeed(state, feed) {
+      /**
+       * Update the stored freets to the provided freets.
+       * @param freets - Freets to store
+       */
+      state.feed = feed;
+      await this.updateFeedFreets(state,feed)
+    },
+    async updateFeedFreets(state) {
+      /**
+       * Update the stored freets to the provided freets.
+       */
+       const url = state.filter ? `/api/feed/` : '/api/feed';
+       const res = await fetch(url).then(async r => r.json());
+       state.freets = res;
     },
     async refreshFreets(state) {
       /**

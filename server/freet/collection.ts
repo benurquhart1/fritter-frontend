@@ -100,13 +100,14 @@ class FreetCollection {
 
     else if (sort === Sort.likes) {
       const freets = await FreetModel.find({authorId: {$in: userIds}}).populate('authorId');
-      const freetArray = []
-      for (const freet in freets) {
-        freetArray.push(freet)
+      const numLikes = await Promise.all(freets.map(async freet =>(await LikeCollection.findAllLikesUsername(freet._id)).length))
+      const freetsWithLikes = [];
+      for (const index in freets) {
+        freetsWithLikes.push({freet:freets[index],likes:numLikes[index]})
       }
-      // const numLikes = await freets.map(async freet =>(await LikeCollection.findAllLikesUsername(freet._id)).length)
-      // freetArray.sort(async freet => await Promise.resolve(await util.getNumLikes(freet)))
-      // const sorted = freets.sort(async freets => (await Promise.all(freets.map(async freet => LikeCollection.findAllLikesUsername(freet._id)))).length);
+      const sortFreets = freetsWithLikes.sort((a,b) => b.likes - a.likes);
+      const sortedFreets = sortFreets.map(freet => freet.freet);
+      return sortedFreets;
     }
     return FreetModel.find({authorId: {$in: userIds}}).sort({dateModified:-1}).populate('authorId');
   }

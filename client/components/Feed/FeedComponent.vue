@@ -1,4 +1,5 @@
-<!-- Default page that also displays freets -->
+<!-- Reusable component representing a single freet and its actions -->
+<!-- We've tagged some elements with classes; consider writing CSS using those classes to style them... -->
 
 <template>
   <main>
@@ -41,10 +42,10 @@
         </div>
       </header>
       <section
-        v-if="$store.state.feed.length"
+        v-if="$store.state.freets"
       >
         <FreetComponent
-          v-for="freet in $store.state.freets"
+          v-for="freet in $store.state.feedFreets"
           :key="freet.id"
           :freet="freet"
         />
@@ -57,40 +58,17 @@
     </section>
   </main>
 </template>
-
 <script>
+
 import FreetComponent from '@/components/Freet/FreetComponent.vue';
 import CreateFreetForm from '@/components/Freet/CreateFreetForm.vue';
 import GetFreetsForm from '@/components/Freet/GetFreetsForm.vue';
 
 export default {
-  name: 'FreetPage',
+  name: 'FeedComponent',
   components: {FreetComponent, GetFreetsForm, CreateFreetForm},
   mounted() {
     this.$refs.getFreetsForm.submit();
   }
 };
 </script>
-
-<style scoped>
-section {
-  display: flex;
-  flex-direction: column;
-}
-
-header, header > * {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-button {
-    margin-right: 10px;
-}
-
-section .scrollbox {
-  flex: 1 0 50vh;
-  padding: 3%;
-  overflow-y: scroll;
-}
-</style>
