@@ -69,6 +69,26 @@ router.delete(
 );
 
 /**
+ * Get a the user object for a user with a given username
+ *
+ * @name GET /api/user?username=username
+ *
+ * @return {UserResponse} - an object with the user's information
+ * @throws {400} - If username is not given
+ * @throws {404} - If no user has given username
+ *
+ */
+ router.get(
+  '/',
+  userValidator.isUsernameExistsQuery,
+  async (req: Request, res: Response) => {
+    const userObject = await UserCollection.findOneByUsername(req.query.username as string);
+    const response = util.constructUserResponse(userObject);
+    res.status(200).json(response);
+  }
+);
+
+/**
  * Create a user account.
  *
  * @name POST /api/users

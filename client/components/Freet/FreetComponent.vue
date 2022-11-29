@@ -6,9 +6,9 @@
     class="freet"
   >
     <header>
-      <h3 class="author">
-        @{{ freet.author }}
-      </h3>
+      <button class="profileButton" @click="$router.push(`/profile?username=${freet.author}`)" >
+        @{{freet.author}}
+      </button>
       <div
         v-if="$store.state.username === freet.author"
         class="actions"
@@ -172,4 +172,16 @@ export default {
     padding: 20px;
     position: relative;
 }
+
+.profileButton {
+  background:white;
+  /* width:120px; */
+  height:30px;
+  border:1px solid black;
+  border-radius:16px;
+  margin-right: 10px;
+  font-size:16px;
+  font-weight:bold;
+}
+
 </style>
