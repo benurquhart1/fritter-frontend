@@ -47,6 +47,12 @@
       </router-link>
       <router-link
         v-if="$store.state.username"
+        to="/group"
+      >
+        Groups
+      </router-link>
+      <router-link
+        v-if="$store.state.username"
         to="/search"
       >
         Search

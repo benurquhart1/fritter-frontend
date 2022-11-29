@@ -28,7 +28,7 @@ router.get(
   ],
   async (req: Request, res: Response) => {
     const contentGroup = await ContentGroupCollection.findOne(req.query.name as string);
-    const response = util.constructContentGroupResponse(contentGroup);
+    const response = await util.constructContentGroupResponse(contentGroup);
     res.status(200).json(response);
   }
 );
@@ -39,6 +39,7 @@ router.get(
  * @name POST /api/contentGroup
  *
  * @param {string} name - The name of the content group
+ * @param {string} description - The description of the content group
  * @return {string} - A success message
  * @throws {403} - If the user is not logged in
  * @throws {400} - If content group name is not given
@@ -52,13 +53,13 @@ router.post(
     contentGroupValidator.isNameNotAlreadyInUse,
   ],
   async (req: Request, res: Response) => {
-    const group = await ContentGroupCollection.addOne(req.body.name as string,req.session.userId as string,"");
+    const group = await ContentGroupCollection.addOne(req.body.name as string,req.session.userId as string,req.body.description ? req.body.description :"");
     await FollowGroupCollection.addFollowGroupByName(req.session.userId,req.body.name);
     await FeedCollection.addOne(req.session.userId,req.body.name as string);
     await ContentGroupCollection.addFollowerById(req.body.name as string ,req.session.userId as string);
     res.status(201).json({
       message: `you have successfully created the content group ${req.body.name as string}`,
-      contentFroup: util.constructContentGroupResponse(group)
+      contentFroup: await util.constructContentGroupResponse(group)
     });
   }
 );
@@ -95,7 +96,7 @@ router.put(
     const group = await ContentGroupCollection.updateOne(req.params.name, req.body);
     res.status(200).json({
       message: 'Your content group was updated successfully.',
-      user: util.constructContentGroupResponse(group)
+      user: await util.constructContentGroupResponse(group)
     });
   }
 );

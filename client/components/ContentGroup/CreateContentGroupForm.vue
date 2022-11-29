@@ -1,27 +1,26 @@
-<!-- Form for creating freets (block style) -->
+<!-- Form for changing username (block style) -->
 
 <script>
 import BlockForm from '@/components/common/BlockForm.vue';
 
 export default {
-  name: 'FollowUserForm',
+  name: 'CreateContentGroupForm',
   mixins: [BlockForm],
   data() {
     return {
-      url: '/api/follow',
+      url: '/api/ContentGroup',
       method: 'POST',
       hasBody: true,
       fields: [
-        {id: 'username', label: 'username', value: ''}
+        {id: 'name', label: 'name', value: ''},
+        {id: 'description', label: 'description', value: ''}
       ],
-      title: 'Follow a user',
-      refreshFreets: true,
+      title: 'Create a content Group',
       callback: () => {
-        const message = 'You have successfully followed the user';
+        const message = 'Successfully created the group';
         this.$set(this.alerts, message, 'success');
         setTimeout(() => this.$delete(this.alerts, message), 3000);
       }
-      
     };
   }
 };

@@ -40,7 +40,7 @@ const ContentGroupSchema = new Schema({
   },
   // a discription of the content group
   description: {
-    type: Date,
+    type: String,
     required: false
   },
   // the user who owns the content group

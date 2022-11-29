@@ -1,6 +1,7 @@
 import type {HydratedDocument} from 'mongoose';
 import moment from 'moment';
 import type {ContentGroup} from './model';
+import UserCollection from '../user/collection';
 
 type ContentGroupResponse = {
   _id: string;
@@ -19,15 +20,16 @@ type ContentGroupResponse = {
  * @param {HydratedDocument<User>} group - the content group
  * @returns {ContentGroupResponse} - the response for the content group to be sent to frontend
  */
-const constructContentGroupResponse = (group: HydratedDocument<ContentGroup>): ContentGroupResponse => {
+const constructContentGroupResponse = async (group: HydratedDocument<ContentGroup>): Promise<ContentGroupResponse> => {
   const contentGroupCopy: ContentGroup = {
     ...group.toObject({
       versionKey: false // Cosmetics; prevents returning of __v property
     })
   };
-  const followers = contentGroupCopy.followers.map(follower => follower.toString());
-  const moderators = contentGroupCopy.moderators.map(mod => mod.toString());
-  const accounts = contentGroupCopy.accounts.map(account => account.toString());
+  const followers = await Promise.all(contentGroupCopy.followers.map(async follower => (await UserCollection.findOneByUserId(follower)).username));
+  const moderators = await Promise.all(contentGroupCopy.moderators.map(async moderator => (await UserCollection.findOneByUserId(moderator)).username));
+  const accounts = await Promise.all(contentGroupCopy.accounts.map(async account => (await UserCollection.findOneByUserId(account)).username));
+  const owner = (await UserCollection.findOneByUserId(contentGroupCopy.owner)).username
 
   return {
     _id: contentGroupCopy._id.toString(),
@@ -36,7 +38,7 @@ const constructContentGroupResponse = (group: HydratedDocument<ContentGroup>): C
     followers: followers,
     moderators: moderators,
     accounts:accounts,
-    owner:contentGroupCopy.owner.toString(),
+    owner:owner,
   };
 };
 
