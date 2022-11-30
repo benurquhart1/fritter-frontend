@@ -1,74 +1,102 @@
-<!-- Reusable component representing a single freet and its actions -->
-<!-- We've tagged some elements with classes; consider writing CSS using those classes to style them... -->
+<!-- Page for account settings and management -->
+<!-- User should be authenticated in order to see this page -->
 
 <template>
   <main>
-    <section v-if="$store.state.username">
-      <header>
-        <h2>Welcome @{{ $store.state.username }}</h2>
-      </header>
-      <CreateFreetForm />
-    </section>
-    <section v-else>
-      <header>
-        <h2>Welcome to Fritter!</h2>
-      </header>
-      <article>
-        <h3>
-          <router-link to="/login">
-            Sign in
-          </router-link>
-          to create, edit, and delete freets.
-        </h3>
-      </article>
-    </section>
-    <section>
-      <header>
-        <div class="left">
-          <h2>
-            Viewing all freets
-            <span v-if="$store.state.filter">
-              by @{{ $store.state.filter }}
-            </span>
-          </h2>
-        </div>
-        <div class="right">
-          <GetFreetsForm
-            ref="getFreetsForm"
-            value="author"
-            placeholder="🔍 Filter by author (optional)"
-            button="🔄 Get freets"
-          />
-        </div>
-      </header>
-      <section
-        v-if="$store.state.freets"
-      >
-        <FreetComponent
-          v-for="freet in $store.state.feedFreets"
-          :key="freet.id"
-          :freet="freet"
-        />
+    <section v-if="feedName">
+      <section v-if="freets !== null">
+        <section>
+          <header>
+            <h2>You are viewing the feed <b>@{{ feedName }}</b></h2>
+          </header>
+        </section>
+        <section>
+          <FreetComponent
+            v-for="freet in freets"
+            :key="freet.id"
+            :freet="freet">
+          </FreetComponent>
+        </section>
       </section>
-      <article
-        v-else
-      >
-        <h3>No freets found.</h3>
-      </article>
+      <section v-else>
+        <h3> Freets for the feed<b>@{{feedName}}</b> could not be found</h3>
+      </section>
     </section>
   </main>
 </template>
+
 <script>
 
 import FreetComponent from '@/components/Freet/FreetComponent.vue';
-import CreateFreetForm from '@/components/Freet/CreateFreetForm.vue';
-import GetFreetsForm from '@/components/Freet/GetFreetsForm.vue';
 
 export default {
   name: 'FeedComponent',
-  components: {FreetComponent, GetFreetsForm, CreateFreetForm},
+  components: {
+    FreetComponent
+  },
+  props: {
+    // Data from the stored freet
+    feedName: {
+      type: String,
+      required: true
+    },
+    freets: {
+      type: [Object],
+      required: true
+    }
+  },
+  data() {
+    return {
+      feedName:null,
+      freets:null,
+      accounts:null,
+      sort:0,
+    }
+  },
   mounted() {
-    this.$refs.getFreetsForm.submit();
-  }
+    this.feedName = props.feedName;
+    this.freets = props.freets
+    // if (this.feedName) {
+      // fetch(`/api/feed?name=${this.feedName}`, {method:"GET"}).then(res => res.json()).then(res => {
+      //   if (res) {
+      //     this.freets = res.freets;
+      //     this.sort = res.sort;
+      //     this.accounts = res.accounts;
+      //   }
+      // });
+    // }
+  },
+  methods: {
+    setSort(sort) {
+
+    }
+  },
+
 };
 </script>
+
+
+<style scoped>
+.buttonOn {
+  background:lightblue;
+  width:120px;
+  height:40px;
+  border:2px solid black;
+  border-radius:20px;
+  margin-right: 10px;
+  font-size:20px;
+  font-weight:bold;
+}
+
+.buttonOff {
+  background:white;
+  width:120px;
+  height:40px;
+  border:2px solid black;
+  border-radius:20px;
+  margin-right: 10px;
+  font-size:20px;
+  font-weight:bold;
+}
+
+</style>

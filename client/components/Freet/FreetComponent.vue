@@ -96,6 +96,9 @@ export default {
       this.editing = false;
       this.draft = this.freet.content;
     },
+    likeFreet() {
+
+    },
     deleteFreet() {
       /**
        * Deletes this freet.

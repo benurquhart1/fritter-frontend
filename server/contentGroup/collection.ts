@@ -238,6 +238,7 @@ class ContentGroupCollection {
    * @return {Promise<HydratedDocument<ContentGroup>>} - The updated content group
    */
    static async updateOne(name: string, groupDetails: any): Promise<HydratedDocument<ContentGroup>> {
+     const group = await ContentGroupModel.findOne({name:name});
     if (groupDetails.addModerator) {
       await this.addModerator(name, groupDetails.addModerator);
     }
@@ -248,13 +249,18 @@ class ContentGroupCollection {
 
     if (groupDetails.addAccount) {
       await this.addAccount(name, groupDetails.addAccount);
+      for (const follower of group.followers) {
+        await FeedCollection.addOneAccount(follower,name,groupDetails.addAccount);
+      }
     }
 
     if (groupDetails.removeAccount) {
       await this.removeAccount(name, groupDetails.removeAccount);
+      for (const follower of group.followers) {
+        await FeedCollection.deleteOneAccount(follower,name,groupDetails.removeAccount);
+      }
     }
 
-    const group = await ContentGroupModel.findOne({name:name});
     return group;
   }
 

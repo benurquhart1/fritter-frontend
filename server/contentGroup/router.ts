@@ -73,7 +73,7 @@ router.post(
  * @param {string} addModerator - a moderator to be added
  * @param {string} removeModerator - a moderator to be removed
  * @param {string} addAccount - a account to be added
- * @param {string} addAccount - a account to be removed
+ * @param {string} removeAccount - a account to be removed
  * @return {ContentGroupResponse} - the updated freet
  * @throws {403} - if the user is not logged in
  * @throws {400} - If the content group name is not given
@@ -85,7 +85,7 @@ router.put(
   '/:name?',
   [
     userValidator.isUserLoggedIn,
-    contentGroupValidator.isNameExistsParams,
+    contentGroupValidator.isNameExistsBody,
     contentGroupValidator.isModerator,
     contentGroupValidator.isAccountExistsAdd,
     contentGroupValidator.isAccountExistsRemove,
@@ -93,7 +93,7 @@ router.put(
     contentGroupValidator.isModeratorExistsRemove,
   ],
   async (req: Request, res: Response) => {
-    const group = await ContentGroupCollection.updateOne(req.params.name, req.body);
+    const group = await ContentGroupCollection.updateOne(req.body.name, req.body);
     res.status(200).json({
       message: 'Your content group was updated successfully.',
       user: await util.constructContentGroupResponse(group)

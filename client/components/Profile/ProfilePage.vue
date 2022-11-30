@@ -3,10 +3,10 @@
 
 <template>
   <main>
-    <section v-if="username === null">
+    <section v-if="username == null">
       <h2>The profile cannot be found</h2>
     </section>
-    <section v-if="username !== null">
+    <section v-if="username != null">
       <section>
         <header>
           <h2>Profile for <b>@{{ username }}</b></h2>

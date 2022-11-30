@@ -6,12 +6,19 @@ import BlockForm from '@/components/common/BlockForm.vue';
 export default {
   name: 'EditContentGroupForm',
   mixins: [BlockForm],
+  props: {
+    name: {
+      type: String,
+      required: true
+    },
+  },
   data() {
     return {
       url: '/api/ContentGroup',
       method: 'PUT',
       hasBody: true,
       fields: [
+        {id: 'name', label: 'group name', value: ''},
         {id: 'addAccount', label: 'add an account', value: ''},
         {id: 'removeAccount', label: 'remove an account', value: ''},
         {id: 'addModerator', label: 'add a moderator', value: ''},

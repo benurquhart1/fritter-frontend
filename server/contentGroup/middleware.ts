@@ -44,7 +44,7 @@ const isUsernameNotAlreadyInUse = async (req: Request, res: Response, next: Next
 const isNameExists = async (name: string, res: Response, next: NextFunction) => {
   if (!name) {
     res.status(400).json({
-      error: 'Provided username must be nonempty.'
+      error: 'Provided name must be nonempty.'
     });
     return;
   }
