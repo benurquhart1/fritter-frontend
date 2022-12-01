@@ -8,9 +8,10 @@
         <section>
           <header>
             <h2>You are viewing the <b>{{ feedName }}</b> feed </h2>
-            <button @click="setSort(0)"> sort by date (newest first)</button>
-            <button @click="setSort(1)"> sort by date (oldest first)</button>
-            <button @click="setSort(2)"> sort by likes</button>
+            <button class="sortButton" @click="setSort(0)"> sort by date (newest first)</button>
+            <button class="sortButton" @click="setSort(1)"> sort by date (oldest first)</button>
+            <button class="sortButton" @click="setSort(2)"> sort by likes</button>
+            <br/>
           </header>
         </section>
         <section>
@@ -102,16 +103,6 @@ export default {
 
 
 <style scoped>
-.buttonOn {
-  background:lightblue;
-  width:120px;
-  height:40px;
-  border:2px solid black;
-  border-radius:20px;
-  margin-right: 10px;
-  font-size:20px;
-  font-weight:bold;
-}
 
 .buttonOff {
   background:white;
@@ -122,6 +113,17 @@ export default {
   margin-right: 10px;
   font-size:20px;
   font-weight:bold;
+}
+
+.sortButton {
+  background:lightblue;
+  height:24px;
+  border:1px solid black;
+  border-radius:16px;
+  margin-right: 10px;
+  font-size:16px;
+  font-weight:bold;
+  margin-bottom:15px;
 }
 
 </style>

@@ -18,13 +18,18 @@
     >
       {{ freet.content }}
     </p>
-    <button v-if="liked" @click="unlikeFreet()">
-      unlike freet
-    </button>
-    <button v-if="!liked" @click="likeFreet()">
-      like freet
-    </button>
-    likes: {{numLikes}}
+    <div v-if="$store.state.username">
+      <button v-if="liked" @click="unlikeFreet()">
+        unlike freet
+      </button>
+      <button v-if="!liked" @click="likeFreet()">
+        like freet
+      </button>
+      likes: {{numLikes}}
+    </div>
+    <div v-else>
+      likes: {{numLikes}}
+    </div>
     <p class="info">
       Posted at {{ freet.dateModified }}
       <button style="float:right" v-if="$store.state.username === freet.author"
@@ -92,7 +97,7 @@ export default {
         body:JSON.stringify({freetId:this.freet._id}),
       };
       await fetch(`/api/like`, {...options}).then(res => res.json()).then(res => {
-        if(res) {
+        if(!res.error) {
           this.liked = true;
           this.numLikes +=1;
         }
@@ -103,7 +108,7 @@ export default {
     },
     unlikeFreet() {
       fetch(`/api/like/${this.freet._id}`, {method:"DELETE"}).then(res => res.json()).then(res => {
-        if(res) {
+        if(!res.error) {
           this.liked = false;
           this.numLikes -=1;
         }

@@ -19,7 +19,7 @@
           <p> Number of followers: {{followersCount}}</p>
           <p> Number following: {{followingCount}}</p>
         </section>
-        <section style="display: flex;gap:20px; font-size:30px">
+        <section v-if="$store.state.username" style="display: flex;gap:20px; font-size:30px">
           <div v-if="isFollowing !==true">
             <button @click="buttonCallback('follow',true)" class="buttonOff"> Follow </button>
           </div>
@@ -128,97 +128,99 @@ export default {
   },
   methods: {
     buttonCallback(group,add) {
-      if (add) {
-        const options = {
-          method: "POST",
-          headers: {'Content-Type': 'application/json'},
-          credentials: 'same-origin',
-          body:JSON.stringify({username:this.username}),
-        };
-        fetch(`/api/${group}`, {...options}).then(res => res.json()).then(res => {
-          if(res) {
-            switch(group) {
-              case "follow":
-                this.isFollowing = true;
-                this.followersCount +=1;
-                break;
-              case "favorite":
-                this.isFavorite = true;
-                if (!this.isFollowing) {
-                  fetch(`/api/follow`, {...options}).then(res => res.json()).then(res => {
-                    if(res) {
-                      this.isFollowing = true;
-                      this.followersCount +=1;
-                    }
-                    else {
-                      this.$store.comit("alert", {message: `An error occurred when following`, status:error})
-                    }
-                  });
-                }
-                break;
-              case "friend":
-                this.isFriend = true;
-                if (!this.isFollowing) {
-                  fetch(`/api/follow`, {...options}).then(res => res.json()).then(res => {
-                    if(res) {
-                      this.isFollowing = true;
-                      this.followersCount +=1;
-                    }
-                    else {
-                      this.$store.comit("alert", {message: `An error occurred when following`, status:error})
-                    }
-                  });
-                }
-                break;
+      if (this.$store.state.username) {
+        if (add) {
+          const options = {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'same-origin',
+            body:JSON.stringify({username:this.username}),
+          };
+          fetch(`/api/${group}`, {...options}).then(res => res.json()).then(res => {
+            if(res) {
+              switch(group) {
+                case "follow":
+                  this.isFollowing = true;
+                  this.followersCount +=1;
+                  break;
+                case "favorite":
+                  this.isFavorite = true;
+                  if (!this.isFollowing) {
+                    fetch(`/api/follow`, {...options}).then(res => res.json()).then(res => {
+                      if(res) {
+                        this.isFollowing = true;
+                        this.followersCount +=1;
+                      }
+                      else {
+                        this.$store.comit("alert", {message: `An error occurred when following`, status:error})
+                      }
+                    });
+                  }
+                  break;
+                case "friend":
+                  this.isFriend = true;
+                  if (!this.isFollowing) {
+                    fetch(`/api/follow`, {...options}).then(res => res.json()).then(res => {
+                      if(res) {
+                        this.isFollowing = true;
+                        this.followersCount +=1;
+                      }
+                      else {
+                        this.$store.comit("alert", {message: `An error occurred when following`, status:error})
+                      }
+                    });
+                  }
+                  break;
+              }
             }
-          }
-          else {
-            this.$store.comit("alert", {message: `Your attempt to ${group} ${this.username} was unsuccessful`, status:error})
-          }
-        });
-      }
-      else {
-        fetch(`/api/${group}/${this.username}`, {method:"DELETE"}).then(res => res.json()).then(res => {
-          if(res) {
-            switch(group) {
-              case "follow":
-                this.isFollowing = false;
-                this.followersCount -=1;
-                if (this.isFavorite) {
-                  // handles the synchronization of removing favorite and friend when unfollowing
-                  fetch(`/api/favorite/${this.username}`, {method:"DELETE"}).then(res => res.json()).then(res => {
-                    if(res) {
-                      this.isFavorite = false;
-                    }
-                    else {
-                      this.$store.comit("alert", {message: `An error occurred when removing favorite`, status:error})
-                    }
-                  });
-                }
-                if (this.isFriend) {
-                  // handles the synchronization of removing friend and friend when unfollowing
-                  fetch(`/api/friend/${this.username}`, {method:"DELETE"}).then(res => res.json()).then(res => {
-                    if(res) {
-                      this.isFriend = false;
-                    }
-                    else {
-                      this.$store.comit("alert", {message: `An error occurred when removing friend`, status:error})
-                    }
-                  });
-                }
-                break;
-              case "favorite":
-                this.isFavorite = false;
-                break;
-              case "friend":
-                this.isFriend = false;
-                break;
+            else {
+              this.$store.comit("alert", {message: `Your attempt to ${group} ${this.username} was unsuccessful`, status:error})
             }
-          }
-          else {
-            this.$store.comit("alert", {message: `Your attempt un${group} ${this.username} was unsuccessful`, status:error})
-          }
-        });
+          });
+        }
+        else {
+          fetch(`/api/${group}/${this.username}`, {method:"DELETE"}).then(res => res.json()).then(res => {
+            if(res) {
+              switch(group) {
+                case "follow":
+                  this.isFollowing = false;
+                  this.followersCount -=1;
+                  if (this.isFavorite) {
+                    // handles the synchronization of removing favorite and friend when unfollowing
+                    fetch(`/api/favorite/${this.username}`, {method:"DELETE"}).then(res => res.json()).then(res => {
+                      if(res) {
+                        this.isFavorite = false;
+                      }
+                      else {
+                        this.$store.comit("alert", {message: `An error occurred when removing favorite`, status:error})
+                      }
+                    });
+                  }
+                  if (this.isFriend) {
+                    // handles the synchronization of removing friend and friend when unfollowing
+                    fetch(`/api/friend/${this.username}`, {method:"DELETE"}).then(res => res.json()).then(res => {
+                      if(res) {
+                        this.isFriend = false;
+                      }
+                      else {
+                        this.$store.comit("alert", {message: `An error occurred when removing friend`, status:error})
+                      }
+                    });
+                  }
+                  break;
+                case "favorite":
+                  this.isFavorite = false;
+                  break;
+                case "friend":
+                  this.isFriend = false;
+                  break;
+              }
+            }
+            else {
+              this.$store.comit("alert", {message: `Your attempt un${group} ${this.username} was unsuccessful`, status:error})
+            }
+          });
+        }
       }
     }
   },

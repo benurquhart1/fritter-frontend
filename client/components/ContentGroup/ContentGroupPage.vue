@@ -4,7 +4,7 @@
 <template>
   <main>
     <section>
-    <div class ="sideMenu">
+      <div class ="sideMenu">
         <header>
           <h4 style="padding-left:10px"> Content Groups:</h4>
         </header>
@@ -28,6 +28,7 @@
               <h3>You are viewing the {{groupName}}</h3>
               <button class="buttonOn" @click="handleFollowButton(following ? false :true)">{{following? "unfollow group" : "follow group"}}</button>
               <button class="buttonOn" v-if="!editMode && isModerator" @click="editGroup()"> Edit Group </button>
+              <button class="buttonOn" v-if="editMode && isModerator" @click="uneditGroup()"> Stop Editing </button>
               <button class="buttonOn" v-if="isOwner" @click="deleteGroup()"> Delete Group</button>
             </section>
           </div>
@@ -132,6 +133,9 @@ export default {
     },
     editGroup() {
       this.editMode = true;
+    },
+    uneditGroup() {
+      this.editMode = falseS;
     },
     handleFollowButton(add) {
       if (add) {
