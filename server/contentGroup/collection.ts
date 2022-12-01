@@ -76,11 +76,10 @@ class ContentGroupCollection {
    * @param {string} name - The name of the content group
    */
   static async deleteOne(name:string): Promise<void> {
-    const group = await ContentGroupModel.findOne({name:name});
-    // for (const follower in group.followers) {
-    await Promise.all(group.followers.map(async follower => await FeedCollection.deleteOne(follower,name)));
-      // await FollowGroupCollection.removeOne()
-    // }
+    // const group = await ContentGroupModel.findOne({name:name});
+    //   for (const follower in this.findfollowers(name)) {
+    //     await FeedCollection.deleteOne(follower,name)
+    //   }
     await ContentGroupModel.deleteOne({name:name});
   }
 

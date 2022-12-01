@@ -77,15 +77,15 @@ export default {
     }
   },
   mounted() {
-    this.username = this.$route.query.username;
+    this.username = this.$route.query.username ? this.$route.query.username : this.$store.state.username;
       // get the data for the followers
     fetch(`/api/users?username=${this.username}`, {method:"GET"}).then(res => res.json()).then(res => {
       this.bio = res.bio
       if (res) {
         fetch(`/api/follow?username=${this.username}`, {method:"GET"}).then(res => res.json()).then(res => {
           this.follow = res;
-          this.followersCount = res.followers.length
-          this.followingCount = res.following.length
+          this.followersCount = res.followers.length;
+          this.followingCount = res.following.length;
           if (this.follow.followers.includes(this.$store.state.username)) {
             this.isFollowing = true;
           }

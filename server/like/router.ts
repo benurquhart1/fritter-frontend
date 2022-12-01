@@ -23,7 +23,7 @@ router.get(
   ],
   async (req: Request, res: Response) => {
     const likes = await LikeCollection.findAllLikesUsername(req.query.freetId as string)
-    res.status(200).json(likes);
+    res.status(200).json({likes:likes});
   }
 );
 

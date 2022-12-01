@@ -28,18 +28,16 @@
       <section v-if="groupName">
         <section>
           <div v-if="groupName !== null">
-            <header>
-              <h2>You are viewing the group: {{groupName}} <button @click="handleFollowButton(following ? false :true)">{{following? "unfollow group" : "follow group"}}</button></h2>
-              <GroupComponent v-bind:data="groupData" />
-            </header>
+            <section style="display: flex;gap:20px; vertical-align:middle">
+              <h3>You are viewing the {{groupName}}</h3>
+              <button class="buttonOn" @click="handleFollowButton(following ? false :true)">{{following? "unfollow group" : "follow group"}}</button>
+              <button class="buttonOn" v-if="!editMode && isModerator" @click="editGroup()"> Edit Group </button>
+              <button class="buttonOn" v-if="isOwner" @click="deleteGroup()"> Delete Group</button>
+            </section>
+            <GroupComponent v-bind:data="groupData" />
           </div>
-          <div v-if="isModerator">
-            <div v-if="editMode === true">
-              <EditContentGroupForm v-bind:name="groupName"/>
-            </div>
-            <div v-else>
-              <button @click="editGroup()"> Edit Group </button>
-            </div>
+          <div v-if="editMode && isModerator">
+            <EditContentGroupForm v-bind:name="groupName"/>
           </div>
         </section>
         <section v-if="freets">
@@ -78,7 +76,7 @@ export default {
       groupData:null,
       isModerator:null,
       following:null,
-      usOwner:null,
+      isOwner:null,
       editMode:null,
       freets:null,
       sort:null,
@@ -88,14 +86,14 @@ export default {
   mounted() {
     this.username = this.$route.query.username ? this.$route.query.username : this.$store.state.username;
     this.group = this.$route.query.group ? this.$route.query.group : null
-    fetch(`/api/FollowGroup?username=${this.username}`, {method:"GET"}).then(res => res.json()).then(res => {
+    fetch(`/api/followGroup?username=${this.username}`, {method:"GET"}).then(res => res.json()).then(res => {
       this.groups = res.followGroupNames
     });
   },
   methods: {
     setGroup(name) {
       this.groupName = name;
-      fetch(`/api/ContentGroup?name=${name}`, {method:"GET"}).then(res => res.json()).then(res => {
+      fetch(`/api/contentGroup?name=${name}`, {method:"GET"}).then(res => res.json()).then(res => {
         if (res) {
           this.groupData = res;
           this.isModerator = res.moderators.includes(this.$store.state.username);
@@ -115,14 +113,27 @@ export default {
 
         }
       });
-      fetch(`/api/FollowGroup?username=${this.$store.state.username}`, {method:"GET"}).then(res => res.json()).then(res => {
+      fetch(`/api/followGroup?username=${this.$store.state.username}`, {method:"GET"}).then(res => res.json()).then(res => {
         if (res) {
           this.following = res.followGroupNames.includes(this.groupName)
         }
       });
     },
     deleteGroup(name) {
-      
+      fetch(`/api/contentGroup/${this.groupName}`, {method:"DELETE"}).then(res => res.json()).then(res => {
+        if (res) {
+          this.groupData = null;
+          this.groupName = null;
+          this.isOwner = null;
+          this.isModerator = null;
+          this.accounts = null;
+          this.editMode = false;
+          this.following = false;
+        }
+        else {
+          this.$store.comit("alert", {message: `The group with name: '${name}' could not be deleted`, status:error});
+        }
+      });
     },
     editGroup() {
       this.editMode = true;
@@ -190,7 +201,7 @@ section .scrollbox {
 } */
 .buttonOn {
   background:lightblue;
-  width:120px;
+  width:240px;
   height:40px;
   border:2px solid black;
   border-radius:20px;

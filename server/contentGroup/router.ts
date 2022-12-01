@@ -128,7 +128,7 @@ router.delete(
     //   await FeedCollection.deleteOne(follower,req.params.name as string);
     //   // await FollowGroupCollection.removeOne()
     // }
-    for (const follower in group.followers) {
+    for (const follower of await ContentGroupCollection.findfollowers(req.params.name)) {
       await FollowGroupCollection.removeFollowGroupByName(follower,req.params.name);
       await FeedCollection.deleteOne(follower,req.params.name as string);
     }

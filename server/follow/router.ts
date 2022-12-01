@@ -45,7 +45,7 @@ router.post(
   [
     userValidator.isUserLoggedIn,
     userValidator.isUsernameExistsBody,
-    followValidator.isNotFollowing,
+    // followValidator.isNotFollowing,
   ],
   async (req: Request, res: Response) => {
     await FollowCollection.addFollowByUsername(req.body.username,req.session.userId);

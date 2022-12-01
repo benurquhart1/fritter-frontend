@@ -4,22 +4,27 @@
 <template>
   <main>
     <section v-if="feedName">
-      <section v-if="freets !== null">
+      <section v-if="localFreets !== null">
         <section>
           <header>
-            <h2>You are viewing the feed <b>@{{ feedName }}</b></h2>
+            <h2>You are viewing the feed <b>{{ feedName }}</b></h2>
           </header>
         </section>
         <section>
           <FreetComponent
-            v-for="freet in freets"
+            v-for="freet in localFreets"
             :key="freet.id"
             :freet="freet">
           </FreetComponent>
         </section>
       </section>
       <section v-else>
-        <h3> Freets for the feed<b>@{{feedName}}</b> could not be found</h3>
+        <section v-if="mounted">
+          <h3> Freets for the feed <b>{{feedName}}</b> could not be found</h3>
+        </section>
+        <section v-else>
+          <p>Loading the freets for the feed <b>{{feedName}}</b></p>
+        </section>
       </section>
     </section>
   </main>
@@ -35,36 +40,35 @@ export default {
     FreetComponent
   },
   props: {
-    // Data from the stored freet
     feedName: {
       type: String,
       required: true
     },
     freets: {
-      type: [Object],
+      type: Array,
       required: true
     }
   },
   data() {
     return {
-      feedName:null,
       freets:null,
       accounts:null,
       sort:0,
+      localFreets:null,
+      mounted:null,
     }
   },
   mounted() {
-    this.feedName = props.feedName;
-    this.freets = props.freets
-    // if (this.feedName) {
-      // fetch(`/api/feed?name=${this.feedName}`, {method:"GET"}).then(res => res.json()).then(res => {
-      //   if (res) {
-      //     this.freets = res.freets;
-      //     this.sort = res.sort;
-      //     this.accounts = res.accounts;
-      //   }
-      // });
-    // }
+    if (this.feedName) {
+      fetch(`/api/feed?name=${this.feedName}`, {method:"GET"}).then(res => res.json()).then(res => {
+        if (res) {
+          this.localFreets = res.freets;
+          this.sort = res.sort;
+          this.accounts = res.accounts;
+        }
+      });
+    }
+    this.mounted = true;
   },
   methods: {
     setSort(sort) {

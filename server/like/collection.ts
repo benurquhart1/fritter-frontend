@@ -45,7 +45,7 @@ class LikeCollection {
    * @returns {Promise<string>[]}
    */
   static async findAllLikesUsername(freet: Types.ObjectId | string): Promise<string[]> {
-    const likes = Promise.all((await LikeModel.find({freet:freet})).map(async like => (await UserCollection.findOneByUserId(like.user)).username));
+    const likes = await Promise.all((await LikeModel.find({freet:freet})).map(async like => (await UserCollection.findOneByUserId(like.user)).username));
     return likes;
   }
 

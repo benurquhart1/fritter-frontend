@@ -3,7 +3,9 @@
     <header>
       <NavBar />
     </header>
-    <router-view />
+    <section>
+      <router-view />
+    </section>
   </div>
 </template>
 

@@ -14,31 +14,18 @@
       <router-link to="/">
         Home
       </router-link>
-
       <router-link
         v-if="$store.state.username"
-        to="/friends"
+        to="/feed?feedName=following"
       >
-        Friends
+        Feeds
       </router-link>
       <router-link
         v-if="$store.state.username"
-        to="/favorites"
+        to="/group"
       >
-        Favorites
-      </router-link>
-      <router-link
-        v-if="$store.state.username"
-        to="/follow"
-      >
-        Follow
-      </router-link>
-      <router-link
-        v-if="$store.state.username"
-        to="/account"
-      >
-        Account
-      </router-link>
+        Groups
+      </router-link>  
       <router-link
         v-if="$store.state.username"
         to="/profile"
@@ -47,16 +34,10 @@
       </router-link>
       <router-link
         v-if="$store.state.username"
-        to="/group"
+        to="/account"
       >
-        Groups
+        Account
       </router-link>
-      <router-link
-        v-if="$store.state.username"
-        to="/search"
-      >
-        Search
-      </router-link>      
       <router-link
         v-else
         to="/login"
