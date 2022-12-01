@@ -135,7 +135,7 @@ export default {
       this.editMode = true;
     },
     uneditGroup() {
-      this.editMode = falseS;
+      this.editMode = false;
     },
     handleFollowButton(add) {
       if (add) {
