@@ -10,7 +10,7 @@ export default {
     return {
       url: '/api/users',
       method: 'DELETE',
-      setUsername: true,
+      setUsername: true, 
       setUserId:true,
       title: 'Delete account',
       fields: [],
