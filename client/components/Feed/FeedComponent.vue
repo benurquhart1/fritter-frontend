@@ -7,7 +7,10 @@
       <section v-if="localFreets !== null">
         <section>
           <header>
-            <h2>You are viewing the feed <b>{{ feedName }}</b></h2>
+            <h2>You are viewing the <b>{{ feedName }}</b> feed </h2>
+            <button @click="setSort(0)"> sort by date (newest first)</button>
+            <button @click="setSort(1)"> sort by date (oldest first)</button>
+            <button @click="setSort(2)"> sort by likes</button>
           </header>
         </section>
         <section>
@@ -20,7 +23,7 @@
       </section>
       <section v-else>
         <section v-if="mounted">
-          <h3> Freets for the feed <b>{{feedName}}</b> could not be found</h3>
+          <h3> Freets for the <b>{{feedName}}</b> feed  could not be found</h3>
         </section>
         <section v-else>
           <p>Loading the freets for the feed <b>{{feedName}}</b></p>
@@ -49,7 +52,7 @@ export default {
     return {
       freets:null,
       accounts:null,
-      sort:0,
+      sort:null,
       localFreets:null,
       mounted:null,
     }
@@ -68,8 +71,30 @@ export default {
   },
   methods: {
     setSort(sort) {
-
-    }
+      const options = {
+        method: "PUT",
+        headers: {'Content-Type': 'application/json'},
+        credentials: 'same-origin',
+        body:JSON.stringify({name:this.feedName,sort:sort}),
+      };
+      fetch(`/api/feed`, {...options}).then(res => res.json()).then(res => {
+        if(res) {
+          this.sort = sort;
+          this.updateFreets();
+        }
+      });
+    },
+    updateFreets() {
+      if (this.feedName) {
+        fetch(`/api/feed?name=${this.feedName}`, {method:"GET"}).then(res => res.json()).then(res => {
+          if (res) {
+            this.localFreets = res.freets;
+            this.sort = res.sort;
+            this.accounts = res.accounts;
+          }
+        });
+      }
+    },
   },
 
 };

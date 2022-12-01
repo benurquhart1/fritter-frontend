@@ -228,6 +228,7 @@ section .scrollbox {
   border-bottom:1px;
   border-left:0px;
   border-right:0px;
+  background-color: lightblue;
   
 }
 

@@ -2,11 +2,11 @@
 
 <template>
   <main>
-    <section v-if="$store.state.username">
+    <section class="top" v-if="$store.state.username">
       <header>
         <h2>Welcome @{{ $store.state.username }}</h2>
       </header>
-      <CreateFreetForm />
+      <CreateFreetForm style="background-color:lightblue"/>
     </section>
     <section v-else>
       <header>
@@ -92,5 +92,10 @@ section .scrollbox {
   flex: 1 0 50vh;
   padding: 3%;
   overflow-y: scroll;
+}
+.top {
+  background-color: lightgreen;
+  padding:2em 5em;
+  margin: 0 -5em ;
 }
 </style>

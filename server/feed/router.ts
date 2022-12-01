@@ -111,7 +111,7 @@ router.put(
     for (const account of removeAccounts) {
       await FeedCollection.deleteOneAccount(userId, name, account)
     }
-    if (req.body.sort) {
+    if (req.body.sort !== undefined) {
       await FeedCollection.setSort(userId,name, req.body.sort);
     }
     const feed = await FeedCollection.findOne(userId,name);

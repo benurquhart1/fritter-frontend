@@ -6,7 +6,7 @@
     class="freet"
   >
     <header class="freetHeader">
-        <p style="padding:0px;display: flex;gap:0px;">
+        <p style="padding:0px;display: flex;gap:15px;">
           <b>@{{freet.author}}</b>
           <button class="profileButton" @click="$router.push(`/profile?username=${freet.author}`)" >
             View profile
@@ -165,8 +165,6 @@ export default {
   font-weight:bold;
 }
 
-.freetHeader {
-  background:lightblue;
-}
+
 
 </style>

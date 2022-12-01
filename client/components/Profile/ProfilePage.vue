@@ -252,7 +252,8 @@ export default {
 
 .top {
   background-color: lightgreen;
-  padding:40px;
+  padding:2em 5em;
+  margin: 0 -5em ;
 }
 
 </style>

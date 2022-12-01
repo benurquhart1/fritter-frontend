@@ -4,9 +4,9 @@
   <main>
     <section>
       <div class ="sideMenu">
-        <heading>
-          <h4 style="padding-left:10px"> Feeds:</h4>
-        </heading>
+        <header>
+          <h4 style="padding-left:50px"> Select Feed:</h4>
+        </header>
         <div v-if="feeds !== null">
           <button class="sideButton"
             @click="setFeed(name)"
@@ -129,6 +129,7 @@ section .scrollbox {
   border-bottom:1px;
   border-left:0px;
   border-right:0px;
+    background-color: lightblue;
   
 }
 </style>
