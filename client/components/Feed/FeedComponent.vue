@@ -43,10 +43,6 @@ export default {
     feedName: {
       type: String,
       required: true
-    },
-    freets: {
-      type: Array,
-      required: true
     }
   },
   data() {

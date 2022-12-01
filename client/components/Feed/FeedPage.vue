@@ -20,7 +20,7 @@
     </section>
     <section class="mainPage">
       <section v-if="feedName !== null">
-        <FeedComponent v-bind:feedName="feedName" :key="feedName" v-bind:freets="freets" />
+        <FeedComponent v-bind:feedName="feedName" :key="feedName"/>
       </section>
     </section>
 
@@ -35,7 +35,6 @@ export default {
   data() {
     return {
       feedName:"following",
-      freets:null,
       feeds:["following","favorites","friends"]
     }
   },
@@ -45,15 +44,6 @@ export default {
   
     });
     this.feedName = this.$route.query.feedName;
-    if (this.feedName) {
-      fetch(`/api/feed?name=${this.feedName}`, {method:"GET"}).then(res => res.json()).then(res => {
-        if (res) {
-          this.freets = this.feeds
-          this.sort = res.sort;
-          this.accounts = res.accounts;
-        }
-      });
-    }
   },
   methods: {
     changefeed(name) {

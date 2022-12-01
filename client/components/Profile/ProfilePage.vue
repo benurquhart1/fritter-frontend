@@ -3,40 +3,43 @@
 
 <template>
   <main>
+
     <section v-if="username == null">
       <h2>The profile cannot be found</h2>
     </section>
     <section v-if="username != null">
-      <section>
-        <header>
-          <h2>Profile for <b>@{{ username }}</b></h2>
-          <p><b>Bio:</b> {{bio}}</p>
-        </header>
-      </section>
-      <section>
-        <p> Number of followers: {{followersCount}}</p>
-        <p> Number following: {{followingCount}}</p>
-      </section>
-      <section style="display: flex;gap:20px; font-size:30px">
-        <div v-if="isFollowing !==true">
-          <button @click="buttonCallback('follow',true)" class="buttonOff"> Follow </button>
-        </div>
-        <div v-else>
-          <button @click="buttonCallback('follow',false)" class="buttonOn"> Following </button>
-        </div>
-        <div v-if="isFriend !==true">
-          <button @click="buttonCallback('friend',true)" class="buttonOff"> Friend</button>
-        </div>
-        <div v-else>
-          <button @click="buttonCallback('friend',false)" class="buttonOn"> Friends </button>
-        </div>
-        <div v-if="isFavorite !==true">
-          <button @click="buttonCallback('favorite',true)" class="buttonOff"> Favorite </button>
-        </div>
-        <div v-else>
-          <button @click="buttonCallback('favorite',false)" class="buttonOn"> Favorited </button>
-        </div>
-      </section>
+      <div class="top">
+        <section>
+          <header>
+            <h2>Profile for <b>@{{ username }}</b></h2>
+            <p><b>Bio:</b> {{bio}}</p>
+          </header>
+        </section>
+        <section>
+          <p> Number of followers: {{followersCount}}</p>
+          <p> Number following: {{followingCount}}</p>
+        </section>
+        <section style="display: flex;gap:20px; font-size:30px">
+          <div v-if="isFollowing !==true">
+            <button @click="buttonCallback('follow',true)" class="buttonOff"> Follow </button>
+          </div>
+          <div v-else>
+            <button @click="buttonCallback('follow',false)" class="buttonOn"> Following </button>
+          </div>
+          <div v-if="isFriend !==true">
+            <button @click="buttonCallback('friend',true)" class="buttonOff"> Friend</button>
+          </div>
+          <div v-else>
+            <button @click="buttonCallback('friend',false)" class="buttonOn"> Friends </button>
+          </div>
+          <div v-if="isFavorite !==true">
+            <button @click="buttonCallback('favorite',true)" class="buttonOff"> Favorite </button>
+          </div>
+          <div v-else>
+            <button @click="buttonCallback('favorite',false)" class="buttonOn"> Favorited </button>
+          </div>
+        </section>
+      </div>
       <section v-if="freets !== null">
         <h3> Freets for <b>@{{username}}:</b></h3>
         <FreetComponent
@@ -245,6 +248,11 @@ export default {
   margin-right: 10px;
   font-size:20px;
   font-weight:bold;
+}
+
+.top {
+  background-color: lightgreen;
+  padding:40px;
 }
 
 </style>

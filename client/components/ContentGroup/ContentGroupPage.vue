@@ -4,15 +4,10 @@
 <template>
   <main>
     <section>
-      <header>
-        <h2>Content Groups Page:</h2>
-      </header>
-    </section>
-    <section>
-      <div class ="sideMenu">
-        <heading>
+    <div class ="sideMenu">
+        <header>
           <h4 style="padding-left:10px"> Content Groups:</h4>
-        </heading>
+        </header>
         <div v-if="groups !== null">
           <button class="sideButton"
             @click="setGroup(name)"
@@ -25,6 +20,7 @@
       </div>
     </section>
     <section class="mainPage">
+      <h2>Content Groups Page:</h2>
       <section v-if="groupName">
         <section>
           <div v-if="groupName !== null">
@@ -34,7 +30,6 @@
               <button class="buttonOn" v-if="!editMode && isModerator" @click="editGroup()"> Edit Group </button>
               <button class="buttonOn" v-if="isOwner" @click="deleteGroup()"> Delete Group</button>
             </section>
-            <GroupComponent v-bind:data="groupData" />
           </div>
           <div v-if="editMode && isModerator">
             <EditContentGroupForm v-bind:name="groupName"/>

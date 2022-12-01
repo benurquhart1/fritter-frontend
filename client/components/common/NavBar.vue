@@ -36,7 +36,7 @@
         v-if="$store.state.username"
         to="/account"
       >
-        Account
+        Account Settings
       </router-link>
       <router-link
         v-else
